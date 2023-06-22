@@ -1,0 +1,71 @@
+require('dotenv').config()
+const bcrypt = require('bcrypt')
+const jwt = require('jsonwebtoken')
+const User =  require('../models/user')
+const { rawListeners } = require('../app')
+
+
+exports.auth = async (req,res,next) =>{
+    try {
+        const token =  req.header("Authorization").replace('Bearer ','')
+        const data = jwt.verify(token, process.env.SECRET)
+        const user = await User.findOne({'_id':data._id})
+        if(!user){
+            res.json({message:"INVALID CREDENTIALS"})
+        }
+        req.user = user
+        next()
+    } catch (error) {
+        req.status(401).json({message: error.message})        
+    }
+}
+
+
+exports.createUser = async (req,res) =>{
+    try {
+        const newUser = await User.create(req.body)
+        await newUser.save()
+        const token = await newUser.generateAuthToken()
+        res.json({newUser,token})
+    } catch (error) {
+        res.status(400).json({message:error.message})
+        
+    }
+}
+
+exports.loginUser = async (req,res)=>{
+    try {
+        const user =  await User.findOne({email:req.body.email})
+        if(!user || await bcrypt.compare(req.body.password, user.password)){
+            res.json({message: 'INVALID CREDENTIALS'})
+        } else{
+            const token = await user.generateAuthToken()
+            res.json({user,token})
+        }
+    } catch (error) {
+        res.status(400).json({message:error.message})
+    }
+}
+
+exports.updateUser = async (req,res)=>{
+    try {
+        const updatingUser = await User.findOneAndUpdate({'_id':req.params.id}, req.body, {new:true})
+        await updatingUser.save()
+        if(!updatingUser){
+            res.json({message:'Could not find User'})
+        } else{
+            res.json({updatingUser})
+        }
+    } catch (error) {
+        res.json.status(400)({message:error.message})
+    }
+}
+
+exports.deleteUser = async (req,res)=>{
+    try {
+        await User.findOneAndDelete({'_id':req.params.id})
+        res.status(204).json({message:'User Deleted'})
+    } catch (error) {
+        res.json({message:error.message})
+    }
+}

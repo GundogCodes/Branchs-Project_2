@@ -8,6 +8,6 @@ app.use(express.json())
 app.use(express.urlencoded({extended:true}))
 app.use(morgan('combined'))
 app.use(methodOverride('_method'))
-app.use('/', userRoutes)
+app.use('/users', userRoutes)
 
 module.exports = app
