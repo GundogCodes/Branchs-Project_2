@@ -1,18 +1,25 @@
-const mongoose = require('mongoose')
+const {model,Schema} = require('mongoose')
 const bcrypt = require('bcrypt')
 
-const messageSchema = new mongoose.Schema({
-    text:{Type:String, require:true},
-    sender:{Type:mongoose.Schema.Types.ObjectId, ref:'User'}
-}, {timestamps:true})
+const messageSchema = new Schema({
+    
+    text:{type:String},
 
+    sender:{type:Schema.Types.ObjectId, ref:'User', required:true}
+
+}, {
+    timestamps:true
+})
+
+/*
 messageSchema.pre('save', async function(next){
     this.text = await bcrypt.hash(this.text,8)
     null;
     next()
 })
 
+*/
 
-const Messages = mongoose.model('Messages', messageSchema)
+const Messages = model('Messages', messageSchema)
 
 module.exports = Messages
