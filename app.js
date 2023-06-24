@@ -9,5 +9,6 @@ app.use(express.urlencoded({extended:true}))
 app.use(morgan('combined'))
 app.use(methodOverride('_method'))
 app.use('/users', userRoutes)
+app.use('/messages', messageRoutes)
 
 module.exports = app
