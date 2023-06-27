@@ -15,6 +15,8 @@ exports.getAllMessages = async (req,res) =>{
 
 exports.sendMessage = async (req,res)=>{
     try {
+
+        req.body.sender = req.user._id.populate()
         const newMessage = await Messages.create(req.body)
         req.user.messages?
         req.user.messages.addToSet({'_id':newMessage._id}):
