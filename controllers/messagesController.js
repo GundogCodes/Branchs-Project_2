@@ -3,11 +3,16 @@ const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 const Messages =  require('../models/messages')
 const User = require('../models/user')
+const { rawListeners } = require('../app')
 
 exports.getAllMessages = async (req,res) =>{
     try {
+        messagesList = []
         const allMessages = await Messages.find({})
-        res.json(allMessages)
+        for(let message of allMessages){
+            messagesList.push(message.text)
+        }
+        res.json(messagesList)
     } catch (error) {
         res.statusCode(400).json({message:error.message})
     }
@@ -16,13 +21,15 @@ exports.getAllMessages = async (req,res) =>{
 exports.sendMessage = async (req,res)=>{
     try {
 
-        req.body.sender = req.user._id.populate()
+        const sendingUser = await User.findOne({'_id':req.user._id})
+        req.body.sender = sendingUser.name
         const newMessage = await Messages.create(req.body)
+        console.log('new MESSAGE: ',newMessage)
         req.user.messages?
         req.user.messages.addToSet({'_id':newMessage._id}):
         req.user.messages = [{_id:newMessage._id}]
         req.user.save()
-        res.json({message:"Message Sent!"})
+        res.json(`${sendingUser.name} says ${newMessage.text}`)
     } catch (error) {
         res.status(400).json({message:error.message})
 

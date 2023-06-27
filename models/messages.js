@@ -5,7 +5,7 @@ const messageSchema = new Schema({
     
     text:{type:String},
 
-    sender:{type:Schema.Types.ObjectId, ref:'User', required:true}
+    sender:{type:String, required:true}
 
 }, {
     timestamps:true
