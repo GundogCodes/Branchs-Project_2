@@ -10,7 +10,7 @@ exports.getAllMessages = async (req,res) =>{
         messagesList = []
         const allMessages = await Messages.find({})
         for(let message of allMessages){
-            messagesList.push(message.text)
+            messagesList.push(`${message.sender}: ${message.text}`)
         }
         res.json(messagesList)
     } catch (error) {
@@ -29,7 +29,7 @@ exports.sendMessage = async (req,res)=>{
         req.user.messages.addToSet({'_id':newMessage._id}):
         req.user.messages = [{_id:newMessage._id}]
         req.user.save()
-        res.json(`${sendingUser.name} says ${newMessage.text}`)
+        res.json(`${sendingUser.name} says ${newMessage.text}, (${newMessage._id})`)
     } catch (error) {
         res.status(400).json({message:error.message})
 
@@ -62,5 +62,23 @@ exports.showAMessage = async (req,res) =>{
     } catch (error) {
         res.status(400).json({message:error.message})
 
+    }
+}
+
+exports.showPrivateMessages = async (req,res)=>{
+    try {
+        
+    } catch (error) {
+        res.status(400).json({message:error.message})
+    }
+}
+
+exports.sendPrivateMessage = async (req,res)=>{
+    try {
+        const sendingTo = await User.findOne({'_id':req.params.id})
+        const newMessage = await Messages.create(req.body)
+        res.json(`${newMessage} sent to ${sendingTo.name}`)
+    } catch (error) {
+        res.status(400).json({message:error.message})
     }
 }
