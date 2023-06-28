@@ -11,9 +11,6 @@ router.delete('/:id',userController.auth, messageController.deleteMessage)
 router.put('/:id', userController.auth, messageController.updateMessage)
 router.get('/:id', userController.auth,  messageController.showAMessage)
 
-//Private Messages
 
-router.get('/:id',userController.auth, messageController.showPrivateMessages)
-router.post('/:id', userController.auth, messageController.sendPrivateMessage)
 
 module.exports = router
