@@ -3,7 +3,6 @@ const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 const Messages =  require('../models/messages')
 const User = require('../models/user')
-const Page = require('../models/messagePage')
 const { rawListeners } = require('../app')
 
 exports.getAllMessages = async (req,res) =>{
@@ -66,3 +65,26 @@ exports.showAMessage = async (req,res) =>{
     }
 }
 
+
+//privateMessages
+
+exports.sendPrivateMessage = async (req,res) => {
+    try {
+        const message = req.body
+        const receivingUser =  await User.findOne({'id':req.params.id})
+        req.body.user.chats.push(messsage)
+        receivingUser.chats.push(message)
+        res.json(receivingUser.chats, req.body.user.chats)
+
+    } catch (error) {
+        res.status(400).json({message:error.message})
+    }
+}
+
+// exports.seeChats  = async (req,res)=>{
+//     try {
+//         console.log('hello')
+//     } catch (error) {
+//         res.status(400).json({message:error.message})
+//     }
+// }
