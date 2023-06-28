@@ -8,7 +8,8 @@ const userSchema = new mongoose.Schema({
     email:{type:String, require:true, unique:true},
     password:{type:String, require:true},
     messages:[{type:mongoose.Schema.Types.ObjectId, ref:'Messages'}],
-    contacts:[{type:mongoose.Schema.Types.ObjectId, ref:'User'}]
+    contacts:[{type:mongoose.Schema.Types.ObjectId, ref:'User'}],
+    chats:{type:[]}
 
 }, {
     timestamps:true

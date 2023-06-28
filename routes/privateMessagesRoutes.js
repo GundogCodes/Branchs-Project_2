@@ -8,6 +8,6 @@ const privateMessageController = require('../controllers/privateMessagesControll
 
 router.get('/:id',userController.auth, privateMessageController.showPrivateMessagesPage)
 router.post('/:id', userController.auth, privateMessageController.sendPrivateMessage)
-router.delete('/:id', userController.auth, privateMessageController.deletePrivateMessagesPage)
+//router.delete('/:id', userController.auth, privateMessageController.deletePrivateMessagesPage)
 
 module.exports =  router
