@@ -67,39 +67,3 @@ exports.showAMessage = async (req,res) =>{
 }
 
 
-//privateMessages
-
-exports.sendPrivateMessage = async (req,res) => {
-    try {
-
-        const sendingUser = await User.findOne({'_id':req.user._id})
-        req.body.sender = sendingUser.name
-        const message = await Messages.create(req.body)
-        console.log('message ',message)
-
-        const receivingUser =  await User.findOne({'_id':req.params.id})
-
-        console.log('receiving user', receivingUser.name)
-        console.log('sending user',sendingUser.name)
-
-        sendingUser.chats.addToSet(`${message.sender}: ${message.text}`)
-        await sendingUser.save()
-
-        receivingUser.chats.addToSet(`${message.sender}: ${message.text}`)
-        await receivingUser.save()
-
-        res.json(sendingUser.chats)
-
-    } catch (error) {
-        res.json({message:error.message})
-    }
-}
-
-exports.seeChats  = async (req,res)=>{
-    try {
-        const foundUserChats = await User.findOne({'_id':req.params.id})
-        res.json(foundUserChats.chats)
-    } catch (error) {
-        res.status(400).json({message:error.message})
-    }
-}

@@ -42,7 +42,7 @@ exports.loginUser = async (req,res)=>{
             res.json({user,token})
         }
     } catch (error) {
-        res.statusCode(400).json({message:error.message})
+        res.status(400).json({message:error.message})
     }
 }
 
@@ -74,7 +74,7 @@ exports.getAllUsers = async (req,res)=>{
         const foundUsers = await User.find({})
         res.json(foundUsers)
     } catch (error) {
-        res.statusCode(400).json({message: error.message})
+        res.status(400).json({message: error.message})
     }
 }
 
