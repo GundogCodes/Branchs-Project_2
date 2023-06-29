@@ -12,8 +12,8 @@ router.put('/:id', userController.auth, messageController.updateMessage)
 router.get('/:id', userController.auth,  messageController.showAMessage)
 
 //privateMessages
-router.post('/new/:id', userController.auth, messageController.sendPrivateMessage)
-//router.get('/new/:id', userController.auth, messageController.seeChats)
+router.post('/pm/:id', userController.auth, messageController.sendPrivateMessage)
+router.get('/pm/:id', userController.auth, messageController.seeChats)
 
 
 module.exports = router

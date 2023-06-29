@@ -77,3 +77,13 @@ exports.getAllUsers = async (req,res)=>{
         res.statusCode(400).json({message: error.message})
     }
 }
+
+exports.seeAUser = async (req,res)=>{
+    try {
+        const foundUser = await User.findOne({'_id':req.params.id})
+        res.json(foundUser)
+
+    } catch (error) {
+        res.statusCode(400).json({message: error.message})
+    }
+}
