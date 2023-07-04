@@ -11,16 +11,11 @@ exports.auth = async (req,res,next) =>{
         const data = jwt.verify(token, process.env.SECRET)
         const user = await User.findOne({ _id: data._id })
         req.user = user
-
-        //console.log('rbi', data._id)
-        //console.log('user_id',user.id)
-
         if(user.id !== data._id){
             res.json({message:`
             INVALID CREDENTIALS - PLEASE LOGIN
             localhost:3000/users/login
             `})
-            
         }
         else{
             next()

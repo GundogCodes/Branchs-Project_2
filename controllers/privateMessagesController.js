@@ -17,13 +17,11 @@ exports.sendPrivateMessage = async (req,res) => {
         sendingUser.contacts.addToSet(receivingUser.username,receivingUser.id)
         receivingUser.contacts.addToSet(message.sender,receivingUser.id)
 
-        sendingUser.chats.name = receivingUser.username
-        sendingUser.chats.messages.addToSet(message)
-        receivingUser.chats.name = sendingUser.username
-        receivingUser.chats.messages.addToSet(message)  
+        sendingUser.chats.sender = receivingUser.username
+        sendingUser.chats.text = `me: ${message.text}`
 
-        //sendingUser.chats.addToSet(receivingUser.username)
-        //receivingUser.chats.addToSet(message.sender)
+        receivingUser.chats.sender = sendingUser.username
+        receivingUser.chats.text = `${sendingUser.username}: ${message.text}`
 
         console.log('receiving User: ',receivingUser)
         console.log('sending User: ',sendingUser)
@@ -40,6 +38,7 @@ exports.sendPrivateMessage = async (req,res) => {
 
 exports.seeChats  = async (req,res)=>{
     try {
+        console.log(req.body.id)
         const foundUserChats = await User.findOne({'_id':req.user.id})
         res.json(foundUserChats.chats)
     } catch (error) {

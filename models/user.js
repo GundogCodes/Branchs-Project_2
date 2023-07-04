@@ -9,10 +9,7 @@ const userSchema = new mongoose.Schema({
     password:{type:String, require:true},
     posts:[{type:mongoose.Schema.Types.ObjectId, ref:'Post'}],
     friends:[{type:mongoose.Schema.Types.ObjectId, ref:'User'}],
-    chats:{
-        name:String,
-        messages:[{type:mongoose.Schema.Types.ObjectId, ref:'privateMessage'}]
-    },
+    chats:{type:mongoose.Schema.Types.ObjectId, ref:'privateMessage'},
     contacts:[{type:Array}]
 
 }, {
