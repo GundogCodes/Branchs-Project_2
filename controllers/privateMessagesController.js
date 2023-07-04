@@ -9,19 +9,22 @@ exports.sendPrivateMessage = async (req,res) => {
     try {
 
         const sendingUser = await User.findOne({'_id':req.user._id})
+        const receivingUser =  await User.findOne({'_id':req.params.id})
         req.body.sender = sendingUser.username
         const message = await pMessages.create(req.body)
         console.log('message ',message)
 
-        const receivingUser =  await User.findOne({'_id':req.params.id})
+        sendingUser.contacts.addToSet(receivingUser.username)
+        sendingUser.chats.addToSet(receivingUser.username)
+        receivingUser.contacts.addToSet(message.sender)
 
-        console.log('receiving user', receivingUser.username)
-        console.log('sending user',sendingUser.username)
-
-        sendingUser.chats.addToSet(`${message.sender}: ${message.text}`)
+        for(let name in sendingUser.contacts){
+            if(name === receivingUser.username)
+            sendingUser.contacts[receivingUser.username.name] = sendingUser.chats.addToSet(message.sender,`${message.sender}: ${message.text}`)
+        }
         await sendingUser.save()
-
-        receivingUser.chats.addToSet(`${message.sender}: ${message.text}`)
+        
+        receivingUser.chats.addToSet(message.sender,`${message.sender}: ${message.text}`)
         await receivingUser.save()
 
         res.json(sendingUser.chats)

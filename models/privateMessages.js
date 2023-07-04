@@ -20,6 +20,6 @@ const privateMessageSchema = new Schema({
 
 
 
-const pMessages = model('privateMessages', privateMessageSchema)
+const pMessages = model('privateMessage', privateMessageSchema)
 
 module.exports = pMessages

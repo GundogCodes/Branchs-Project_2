@@ -22,7 +22,9 @@ exports.makePost = async (req,res)=>{
     try {
 
         const sendingUser = await User.findOne({'_id':req.user._id})
+        console.log(sendingUser)
         req.body.sender = sendingUser.username
+        console.log(req.body.sender)
         const newPost = await Post.create(req.body)
         console.log('New Post: ',newPost)
         req.user.posts?
