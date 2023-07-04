@@ -22,14 +22,14 @@ exports.makePost = async (req,res)=>{
     try {
 
         const sendingUser = await User.findOne({'_id':req.user._id})
-        req.body.sender = sendingUser.name
+        req.body.sender = sendingUser.username
         const newPost = await Post.create(req.body)
         console.log('New Post: ',newPost)
         req.user.posts?
         req.user.posts.addToSet({'_id':newPost._id}):
         req.user.posts = [{_id:newPost._id}]
         req.user.save()
-        res.json(`${sendingUser.name}: ${newPost.text}, (${newPost._id})`)
+        res.json(`${sendingUser.username}: ${newPost.text}, (${newPost._id})`)
 
     } catch (error) {
         res.json({message:error.message})
