@@ -10,13 +10,21 @@ exports.auth = async (req,res,next) =>{
         const token =  req.header("Authorization").replace('Bearer ','')
         const data = jwt.verify(token, process.env.SECRET)
         const user = await User.findOne({ _id: data._id })
-        console.log(req.body._id)
-        console.log(user._id)
-        if(!user._id !== req.body._id){
-            res.json({message:"INVALID CREDENTIALS"})
-        }
         req.user = user
-        next()
+
+        //console.log('rbi', data._id)
+        //console.log('user_id',user.id)
+
+        if(user.id !== data._id){
+            res.json({message:`
+            INVALID CREDENTIALS - PLEASE LOGIN
+            localhost:3000/users/login
+            `})
+            
+        }
+        else{
+            next()
+        }
     } catch (error) {
         res.status(401).json({message: error.message})        
     }
@@ -29,7 +37,7 @@ exports.createUser = async (req,res) =>{
         await newUser.save()
         res.json({newUser})
     } catch (error) {
-        res.statusCode(400).json({message:error.message})
+        res.status(400).json({message:error.message})
         
     }
 }
@@ -58,7 +66,7 @@ exports.updateUser = async (req,res)=>{
             res.json({updatingUser})
         }
     } catch (error) {
-        res.json.statusCode(400)({message:error.message})
+        res.json.status(400)({message:error.message})
     }
 }
 
