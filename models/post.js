@@ -1,7 +1,7 @@
 const {model,Schema} = require('mongoose')
 const bcrypt = require('bcrypt')
 
-const messageSchema = new Schema({
+const postSchema = new Schema({
     
     text:{type:String},
 
@@ -12,7 +12,7 @@ const messageSchema = new Schema({
 })
 
 /*
-messageSchema.pre('save', async function(next){
+postSchema.pre('save', async function(next){
     this.text = await bcrypt.hash(this.text,8)
     null;
     next()
@@ -20,6 +20,6 @@ messageSchema.pre('save', async function(next){
 
 */
 
-const Messages = model('Messages', messageSchema)
+const Post = model('Post', postSchema)
 
-module.exports = Messages
+module.exports = Post

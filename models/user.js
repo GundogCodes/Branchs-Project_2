@@ -4,11 +4,11 @@ const jwt = require('jsonwebtoken')
 
 const userSchema = new mongoose.Schema({
 
-    name:{type:String, require:true},
+    username:{type:String, require:true,unique:true},
     email:{type:String, require:true, unique:true},
     password:{type:String, require:true},
-    messages:[{type:mongoose.Schema.Types.ObjectId, ref:'Messages'}],
-    contacts:[{type:mongoose.Schema.Types.ObjectId, ref:'User'}],
+    posts:[{type:mongoose.Schema.Types.ObjectId, ref:'Post'}],
+    friends:[{type:mongoose.Schema.Types.ObjectId, ref:'User'}],
     chats:[{type:String}]
 
 }, {

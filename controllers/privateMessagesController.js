@@ -33,7 +33,7 @@ exports.sendPrivateMessage = async (req,res) => {
 
 exports.seeChats  = async (req,res)=>{
     try {
-        const foundUserChats = await User.findOne({'_id':req.params.id})
+        const foundUserChats = await User.findOne({'_id':req.user.id})
         res.json(foundUserChats.chats)
     } catch (error) {
         res.status(400).json({message:error.message})
