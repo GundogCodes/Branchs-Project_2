@@ -3,7 +3,7 @@ const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 const Post =  require('../models/post')
 const User = require('../models/user')
-const { rawListeners } = require('../app')
+
 
 exports.allPosts = async (req,res) =>{
     try {

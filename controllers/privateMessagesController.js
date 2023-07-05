@@ -8,35 +8,58 @@ const { findOneAndUpdate } = require('../models/post')
 
 exports.sendPrivateMessage = async (req,res) => {
     try {
-        const sendingUser = await User.findOne({'_id':req.user._id})
-        const receivingUser =  await User.findOne({'_id':req.params.id})
-        console.log('sending User', sendingUser)
-        console.log('receiving User',receivingUser)
-        req.body.sender = toString(sendingUser.username)
-        const message = await pMessages.create(req.body)
-        console.log('message: ', message)
+        if(!req.body.text){
+            res.json(" Include a 'text' key in your message")
+        } else{
 
-        console.log('message text: ',message.text)
+            const sendingUser = await User.findOne({'_id':req.user._id})
+            const receivingUser =  await User.findOne({'_id':req.params.id})
+           // console.log('sending User', sendingUser)
+           // console.log('receiving User',receivingUser)
+            req.body.sender = toString(sendingUser.username)
+            const message = await pMessages.create(req.body)
+           // console.log('message: ', message)
+            
+            //console.log('message text: ',message.text)
+            for(let contact of sendingUser.contacts){
+                //console.log('sendingUser contacts: ', contact[0])
+                if(contact[0]!== receivingUser.username){
 
-        sendingUser.contacts.addToSet(receivingUser.username)
-
-        receivingUser.contacts.addToSet(sendingUser.username)
-        
-
-        sendingUser.chats.addToSet(`me: ${message.text} to ${receivingUser.username}`)
-
-
-        receivingUser.chats.addToSet(`${sendingUser.username}: ${message.text}`)
-
-
-        console.log('receiving User: ',receivingUser)
-        console.log('sending User: ',sendingUser)
-
-        await sendingUser.save()
-        await receivingUser.save()
-
-        res.json(sendingUser.chats)
-        
+                    sendingUser.contacts.addToSet(receivingUser.username)
+                } else{
+                    console.log()
+                }
+                
+                for(let contact of receivingUser.contacts){
+                    // console.log('receivingUser contacts: ', contact[0])
+                    
+                    if(contact[0]!==sendingUser.username){
+                        
+                        receivingUser.contacts.addToSet(sendingUser.username)
+                    } else{
+                        console.log()
+                }
+            }
+            }
+            
+            
+            
+            
+            sendingUser.chats.addToSet(`me: ${message.text} to ${receivingUser.username}`)
+            
+            
+            receivingUser.chats.addToSet(`${sendingUser.username}: ${message.text}`)
+            
+            
+            //console.log('receiving User: ',receivingUser)
+            //console.log('sending User: ',sendingUser)
+            
+            await sendingUser.save()
+            await receivingUser.save()
+            
+            res.json(sendingUser.chats)
+        }
+    
     } catch (error) {
         res.json({message:error.message})
     }
