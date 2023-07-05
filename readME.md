@@ -1,21 +1,17 @@
-### MASTER BRANCH
+# MASTER BRANCH
 
-### About The Project:
+## About The Project:
 
-### Built With:
-<h2>JavaScript (programming language)<h2>
-<h2>Git/Github (version control)<h2>
-<h2>Express (server control)<h2>
-<h2>Node.js (local javascript environment)<h2>
-<h2>MongoDB/Mongoose (database control)<h2>
-<h2>Brcypt (encryption) <h2>
-<h2>Jsonwebtoken (authentication)<h2>
-<h2>Artillery (load testing) <h2>
-<h2>Jest & Supertest (unit testing) <h2>
-
-### Getting Started:
-
-## Installation
+## Built With:
+- JavaScript (programming language)
+- Git/Github (version control)
+- Express (server control)
+- Node.js (local javascript environment)
+- MongoDB/Mongoose (database control)
+- Brcypt (encryption) 
+- Jsonwebtoken (authentication)
+- Artillery (load testing) 
+- Jest & Supertest (unit testing) 
 
 ### Prerequisites
 |            | List       |           |
@@ -23,10 +19,23 @@
 | Postman    | Node.js    | Mongodb   |
 | Github     | VSCode     |JavaScript |
 
+
+## Getting Started:
+(how to clone project into user local machine)
+## Installation
+(all global and local packages you need)
+## Starting App
+(how to run in dev mode)
+## Using App
+(how to use with postman and make requests)
+## Testing App
+
+## Start App (Without Dev Mode)
 <pre><code>https://github.com/GundogCodes/project_2</code></pre>
 
-### Installation
--  copy this link below
+
+
+
 <pre><code>https://github.com/bangoo040993/unit2apiproject.git</code></pre>
 -  open terminal and enter this ```mkdir <foldername>```
 -  go into that folder with this command ```cd <foldername>```
