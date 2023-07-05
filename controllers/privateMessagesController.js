@@ -44,9 +44,19 @@ exports.sendPrivateMessage = async (req,res) => {
 
 exports.seeChats  = async (req,res)=>{
     try {
-        console.log(req.body.id)
-        const foundUserChats = await User.findOne({'_id':req.user._id})
-        res.json(foundUserChats.chats)
+        console.log('rui',req.user.id)
+        console.log('rpd',req.params.id)
+        if(req.params.id === req.user.id){
+            
+            const foundUser = await User.findOne({'_id':req.user._id})
+            const chats = foundUser.chats
+            const user = foundUser.username +"'s Chats:"
+            res.json({user,chats})
+
+        
+        } else if(req.params.id !== req.user.id){
+            res.json('Not Authorized to see these chats, please login')
+        }
     } catch (error) {
         res.status(400).json({message:error.message})
     }
