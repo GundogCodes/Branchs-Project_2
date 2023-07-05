@@ -18,14 +18,16 @@ exports.sendPrivateMessage = async (req,res) => {
 
         console.log('message text: ',message.text)
 
-        sendingUser.contacts.addToSet(receivingUser.username,receivingUser._id)
-        receivingUser.contacts.addToSet(sendingUser.username,receivingUser._id)
+        sendingUser.contacts.addToSet(receivingUser.username)
 
-        sendingUser.chats.addToSet(message.text)
-      //  sendingUser.chats.text = `me: ${message.text}`
+        receivingUser.contacts.addToSet(sendingUser.username)
+        
 
-        receivingUser.chats.addToSet(message.text)
-       // receivingUser.chats.text = `${sendingUser.username}: ${message.text}`
+        sendingUser.chats.addToSet(`me: ${message.text} to ${receivingUser.username}`)
+
+
+        receivingUser.chats.addToSet(`${sendingUser.username}: ${message.text}`)
+
 
         console.log('receiving User: ',receivingUser)
         console.log('sending User: ',sendingUser)
