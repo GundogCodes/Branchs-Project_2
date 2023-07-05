@@ -83,7 +83,7 @@ exports.getAllUsers = async (req,res)=>{
     }
 }
 
-exports.seeAUser = async (req,res)=>{
+exports.seeProfile = async (req,res)=>{
     try {
         const foundUser = await User.findOne({'_id':req.params.id})
         res.json(foundUser)

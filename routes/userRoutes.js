@@ -15,6 +15,6 @@ router.put('/:id', userController.auth, userController.updateUser) //works
 //DELETE
 router.delete('/:id', userController.auth, userController.deleteUser) //works
 //SHOW
-router.get('/:id', userController.seeAUser)
+router.get('/:id', userController.seeProfile)
 
 module.exports = router
