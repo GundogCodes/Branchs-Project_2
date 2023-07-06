@@ -31,7 +31,7 @@ exports.createUser = async (req,res) =>{
     try {
         const newUser = await User.create(req.body)
         await newUser.save()
-        res.json({newUser})
+        res.json({newUser:newUser, loginHere:'/users/login'})
     } catch (error) {
         res.status(400).json({message:error.message})
         
@@ -52,6 +52,11 @@ exports.createUserPrompt = async (req,res) =>{
 exports.loginUser = async (req,res)=>{
     try {
         const user =  await User.findOne({email:req.body.email})
+
+        console.log('user',user)
+        console.log('user.pass',user.password)
+        console.log('req.body.pass',req.body.password)
+        
         if(!user || !await bcrypt.compare(req.body.password, user.password)){
             res.json({message: 'INVALID CREDENTIALS'})
         } else{

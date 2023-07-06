@@ -32,8 +32,8 @@
 ### 2. Now navigate back to the terminal, and move your project directory and type the following: ```git clone git@github.com:GundogCodes/project_2.git ``` This will begin to download all the project files on to your machine. You can now open the project in your favourite code editor.
 
 ## Installation
-(all global and local packages you need)
-### Once your project is open, there will be 2 more things you need to do before you can start running the app. On the command line, enter: ```npm i``` which will download all the necessary packages that the app needs to run. Next, open the project in your code editor, navigate to the .env file where you will add your desired sha256 hash key = to SECRET. This is necessary to properly authenicate your users.
+
+### Once your project is open, there will be 2 more things you need to do before you can start running the app. On the command line, enter: ```npm i``` which will download all the necessary packages that the app needs to run. Next, open the project in your code editor, navigate to the .env file where you will add your desired secret sha256 hash key = to SECRET ```SECRET=<yourHashedKey>```. This is necessary to properly authenicate your users.
 
 ## Starting App 
 
@@ -41,7 +41,15 @@
 
 ## Using App
 (how to use with postman and make requests)
-### You can begin to make request to the app with Postman. Open Postman and click on the + icon in the top left corner to initate a request session. In the url section type: ```localhost:3000/users/new```       
+### 1.Setting up request: You can begin to make request to the app with Postman. Open Postman and click on the + icon in the top left corner to initate a request session. In the url section type: ```localhost:3000/home``` and send a GET request. You will be taken to the homepage of the app where you will see a breif description of the app as as well as prompts to create an account or login.
+
+### 2.Creating an Account: If you don't already have an account click on the ```/users/new/``` in createAnAccount's value and you will be taken to the ```users/new``` route where you will POST a raw json request with the keys of 'username', an unique 'email', and a 'password' along with your preferred credentials. The app will respond with your newly created user and a login link. Click on the login link.
+
+### 3.Logging in: On the ```users/login``` POST your email and password in a raw json package and you will be returned with your hashed login credentials and a login jsonwebtoken. Copy the token, move over to the Authorization tab and select 'Bearer Token' in the types dropdown menu. Next, paste the token in the token text box, now the app knows which user is logged in.
+
+### 4. Chatting on the Main Forum: Send GET request to ```localhost:3000/main``` to see the main forum chats, feel free to read through what people are talking about! If you would like to add to the conversation send a POST to ```/main/new``` with a 'text' key with whatever comment you would like to post check back on the main to see your comment live!
+
+### 5. Private messaging users: From the main chat you can see the users commenting along with their userIDs (a long string) if you would like to privately message them copy their userID and in the URL type ```localhost:3000/pm/:userID``` send a POST with a 'text' key along with your message and your message will appear in the user's and your chats. You can also find users by seeing all users with a GET request on the ```/users``` route. When You would like to see you chats simply find your userID from your user name on the users or main GET routes and send a GET to ```localhost:3000/pm/yourUserID```. You are not allowed access to other users chats.
 
 ## Testing App
 
