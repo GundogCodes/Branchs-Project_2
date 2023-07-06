@@ -43,8 +43,6 @@ exports.sendPrivateMessage = async (req,res) => {
             }
             
             
-            
-            
             sendingUser.chats.addToSet(`me: ${message.text} to ${receivingUser.username}`)
             
             
