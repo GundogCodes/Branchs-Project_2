@@ -15,10 +15,34 @@ exports.sendPrivateMessage = async (req,res) => {
             const sendingUser = await User.findOne({'_id':req.user.id})
             const receivingUser =  await User.findOne({'_id':req.params.id})
             req.body.sender = sendingUser.username
+            req.body.receiver = receivingUser.username
             const message = await pMessages.create(req.body)
+            const messageText = message.text
+            console.log('messageText',message.text)
+            console.log('message',message)
             console.log('SU before',sendingUser)
             console.log('RU before', receivingUser)
-            sendingUser.interactions.addToSet(receivingUser.username)
+            //sendingUser.chats.addToSet(receivingUser.username)
+            for(let i=0; i<=sendingUser.interactions.length; i++){
+                if (sendingUser.interactions[i] !== sendingUser.username){
+                    sendingUser.interactions.addToSet(receivingUser.username)
+                  
+                    sendingUser.chats.addToSet(message)
+                } else{
+                    sendingUser.chats.addToSet(message)
+                }
+            }
+
+            for(let i=0; i<=receivingUser.interactions.length; i++){
+                if (receivingUser.interactions[i] !== receivingUser.username){
+                    receivingUser.interactions.addToSet(sendingUser.username)
+                  
+                    receivingUser.chats.addToSet(message)
+                } else{
+                    receivingUser.chats.addToSet(message)
+                }
+            }
+
             receivingUser.interactions.addToSet(sendingUser.username)
             
             await sendingUser.save()
@@ -40,7 +64,7 @@ exports.seeChats  = async (req,res)=>{
         console.log('rpd',req.params.id)
         if(req.params.id === req.user.id){
             
-            const foundUser = await User.findOne({'_id':req.user._id})
+            const foundUser = await User.findOne({'_id':req.user._id}).populate('chats')
             const chats = foundUser.chats
             const user = foundUser.username +"'s Chats:"
             res.json({user,chats})

@@ -5,7 +5,7 @@ const postSchema = new Schema({
     
     text:{type:String},
 
-    sender:{type:String, required:true}
+    sender:{type:Schema.Types.ObjectId, ref:'User', required:true}
 
 }, {
     timestamps:true

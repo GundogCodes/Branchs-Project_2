@@ -5,7 +5,9 @@ const privateMessageSchema = new Schema({
     
     text:{type:String},
 
-    sender:{type:String, required:true}
+    sender:{type:String, required:true},
+    
+    receiver:{type:String, required:true}
 
 }, {
     timestamps:true

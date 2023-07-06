@@ -10,7 +10,9 @@ exports.allPosts = async (req,res) =>{
         postList = []
         const allPosts = await Post.find({})
         for(let post of allPosts){
-            postList.push(`${post.sender}: ${post.text}`)
+            console.log('post',post)
+           // const posterUsername = await User.findOne({'_id':post.sender.id})
+            postList.push(` ${post.sender}: ${post.text}`)
         }
         res.json(postList)
     } catch (error) {
@@ -23,7 +25,7 @@ exports.makePost = async (req,res)=>{
 
         const sendingUser = await User.findOne({'_id':req.user._id})
         console.log(sendingUser)
-        req.body.sender = sendingUser.username
+        req.body.sender = sendingUser
         console.log(req.body.sender)
         const newPost = await Post.create(req.body)
         console.log('New Post: ',newPost)
