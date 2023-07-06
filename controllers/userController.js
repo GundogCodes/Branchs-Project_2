@@ -81,7 +81,7 @@ exports.deleteUser = async (req,res)=>{
     try {
         if(req.user.id !== req.params.id){
             res.json('INVALID CREDENTIALS - PLEASE LOGIN')
-        } else{
+        } else if(req.user.id === req.params.id){
 
             console.log('req.user: ',req.user)
             console.log('req.user.id: ',req.user.id)
