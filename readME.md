@@ -52,6 +52,9 @@
 ### 5. Private messaging users: From the main chat you can see the users commenting along with their userIDs (a long string) if you would like to privately message them copy their userID and in the URL type ```localhost:3000/pm/:userID``` send a POST with a 'text' key along with your message and your message will appear in the user's and your chats. You can also find users by seeing all users with a GET request on the ```/users``` route. When You would like to see you chats simply find your userID from your user name on the users or main GET routes and send a GET to ```localhost:3000/pm/yourUserID```. You are not allowed access to other users chats.
 
 ## Testing App
+### 1. Load testing with Artillery: If its not there already, in the scripts object in package.json, add a "load" key with the value of "artillery run tests/artillery.yml". Now within the artillery.yml file in tests you will see load testing script of sending 20 GET requests to ```localhost:3000/home``` every second for 60 seconds. To verify that the test is sucessful run the app from code editor terminal ```npm run dev``` then in your system terminal navigate to the project file and run the command ```npm run load``` this will trigger the load testing on that route and you can see that the test is successful. If you would like to run further testing on other routes feel free to do so, just speicify the route and the type of request, if it is a post or put request you must provide a json with the appropriate properties to test the load properly.
+
+### 2. Unit testing with Jest, Supertest, MongoMemoryServer: 
 
 ## Start App (Without Dev Mode)
 - run command: npm start
