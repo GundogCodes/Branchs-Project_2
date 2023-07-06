@@ -54,7 +54,7 @@
 ## Testing App
 ### 1. Load testing with Artillery: If its not there already, in the scripts object in package.json, add a "load" key with the value of "artillery run tests/artillery.yml". Now within the artillery.yml file in tests you will see load testing script of sending 20 GET requests to ```localhost:3000/home``` every second for 60 seconds. To verify that the test is sucessful run the app from code editor terminal ```npm run dev``` then in your system terminal navigate to the project file and run the command ```npm run load``` this will trigger the load testing on that route and you can see that the test is successful. If you would like to run further testing on other routes feel free to do so, just speicify the route and the type of request, if it is a post or put request you must provide a json with the appropriate properties to test the load properly.
 
-### 2. Unit testing with Jest, Supertest, MongoMemoryServer: 
+### 2. Unit testing with Jest, Supertest, MongoMemoryServer: If its not there already, in package.json , in the scripts object, test should have its value be 'jest'. Navigating to tests/app.test.js, you can see all the unit testing for all the app routes. Feel free to run further tests. when you would like to execute the unit tests, simply run ```npm run test``` in the code editor terminal or in the project directory of your machine terminal.
 
 ## Start App (Without Dev Mode)
 - run command: npm start
