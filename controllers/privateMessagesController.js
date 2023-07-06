@@ -11,15 +11,22 @@ exports.sendPrivateMessage = async (req,res) => {
         if(!req.body.text){
             res.json(" Include a 'text' key in your message")
         } else{
-
-            const sendingUser = await User.findOne({'_id':req.user._id})
+            //req.user.id !== req.params.id
+            const sendingUser = await User.findOne({'_id':req.user.id})
             const receivingUser =  await User.findOne({'_id':req.params.id})
-
+            req.body.sender = sendingUser.username
+            const message = await pMessages.create(req.body)
+            console.log('SU before',sendingUser)
+            console.log('RU before', receivingUser)
+            sendingUser.interactions.addToSet(receivingUser.username)
+            receivingUser.interactions.addToSet(sendingUser.username)
             
             await sendingUser.save()
             await receivingUser.save()
             
-            res.json(sendingUser.chats)
+            console.log('SU after',sendingUser)
+            console.log('RU after', receivingUser)
+            res.json(message)//sendingUser.chats)
         }
     
     } catch (error) {
