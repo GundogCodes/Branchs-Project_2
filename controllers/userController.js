@@ -79,8 +79,16 @@ exports.updateUser = async (req,res)=>{
 
 exports.deleteUser = async (req,res)=>{
     try {
-        await User.findOneAndDelete({'_id':req.params.id})
-        res.json({message:'User Deleted'})
+        if(req.user.id !== req.params.id){
+            res.json('INVALID CREDENTIALS - PLEASE LOGIN')
+        } else{
+
+            console.log('req.user: ',req.user)
+            console.log('req.user.id: ',req.user.id)
+            console.log('req.params.id',req.params.id)
+            await User.findOneAndDelete({'_id':req.params.id})
+            res.json({message:'User Deleted'})
+        }
     } catch (error) {
         res.json({message:error.message})
     }
