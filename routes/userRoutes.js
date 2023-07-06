@@ -8,6 +8,7 @@ const userController = require('../controllers/userController')
 router.get('/', userController.getAllUsers) //works
 //CREATE
 router.post('/new', userController.createUser) //works
+router.get('/new', userController.createUserPrompt) //works
 //UPDATE
 router.post('/login', userController.loginUser) //works
 //EDIT

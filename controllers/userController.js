@@ -10,16 +10,17 @@ exports.auth = async (req,res,next) =>{
         const token =  req.header("Authorization").replace('Bearer ','')
         const data = jwt.verify(token, process.env.SECRET)
         const user = await User.findOne({ _id: data._id })
-        req.user = user
-        if(user.id !== data._id){
-            res.json({message:`
-            INVALID CREDENTIALS - PLEASE LOGIN
-            localhost:3000/users/login
-            `})
+        console.log('req', req)
+        console.log('body', req.body)
+        console.log('user', req.body.user)
+        console.log('ui',user.id)
+        if(!user){
+            res.json({message:`INVALID CREDENTIALS - PLEASE LOGIN`})
         }
-        else{
+
+            req.user = user
             next()
-        }
+        
     } catch (error) {
         res.status(401).json({message: error.message})        
     }
@@ -31,6 +32,17 @@ exports.createUser = async (req,res) =>{
         const newUser = await User.create(req.body)
         await newUser.save()
         res.json({newUser})
+    } catch (error) {
+        res.status(400).json({message:error.message})
+        
+    }
+}
+
+exports.createUserPrompt = async (req,res) =>{
+    try {
+
+        res.json({message:"Post a request with a 'username, email, and password",
+                login:'post a login with your credentials: /localhost:3000/users/login'})
     } catch (error) {
         res.status(400).json({message:error.message})
         
