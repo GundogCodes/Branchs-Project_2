@@ -167,26 +167,96 @@ describe('Testing all User endpoints', ()=>{
 
         .delete(`/users/${user._id}`)
         .set('Authorization', `Bearer ${token}`)
-        console.log('response',response)
+
         expect(response.body).toHaveProperty('message')
         expect(response.body.message).toEqual('User Deleted')
         expect(response.status).toBe(200)
     })
-    
-    /*
-    router.put('/:id', userController.auth, userController.updateUser) //works
-    router.delete('/:id', userController.auth, userController.deleteUser) //works
-
-    */
 })
 describe('Testing all main forums endpoints', ()=>{
-    /*
-    router.get('/', userController.auth, mainPostsController.allPosts)
-    router.post('/new',userController.auth, mainPostsController.makePost)
-    router.delete('/:id',userController.auth, mainPostsController.deletePost)
-    router.put('/:id', userController.auth, mainPostsController.updatePost)
-    router.get('/:id', userController.auth,  mainPostsController.showPost)
-    */
+    test('get all main forum posts', async ()=>{
+        const user =  new User ({username:'test',email:'t@t.com',password:'t'})
+        await user.save()
+        const token = await user.generateAuthToken()
+        const response = await request(app)
+
+        .get(`/main`)
+        .set('Authorization', `Bearer ${token}`)
+        console.log(response)
+        expect(Array.isArray(response.body)).toBe(true)
+        
+    })
+    test('make a post on the main forum', async ()=>{
+        const user =  new User ({username:'testing',email:'ti@ti.com',password:'t'})
+        await user.save()
+        const post = new Post({text:'hey'})
+        post.sender = user
+        await post.save()
+        await user.save()
+        const token = await user.generateAuthToken()
+        const response = await request(app)
+        // console.log('response',response)
+         //console.log('post',post)
+
+        .post(`/main/new`)
+        .set('Authorization', `Bearer ${token}`)
+        .send({text:'hey'})
+        expect(response.body).toBe(`${user.username}: ${post.text}`)
+
+    })
+    test('delete a post', async ()=>{
+        const user =  new User ({username:'tester',email:'to@to.com',password:'t'})
+        await user.save()
+        const post = new Post({text:'hey'})
+        post.sender = user
+        await post.save()
+        await user.save()
+        const token = await user.generateAuthToken()
+        const response = await request(app)
+        .delete(`/main/${post._id}`)
+        .set('Authorization', `Bearer ${token}`)
+        expect(response.body.message).toEqual('post deleted')
+    })
+
+    test('updating a post', async ()=>{
+        const user =  new User ({username:'tester2',email:'too@too.com',password:'t'})
+        await user.save()
+        const post = new Post({text:'hey'})
+        post.sender = user
+        await post.save()
+        await user.save()
+        const token = await user.generateAuthToken()
+        const response = await request(app)
+        .put(`/main/${post._id}`)
+        .set('Authorization', `Bearer ${token}`)
+        .send({text:'updatedPost'})
+        expect(response.body).toHaveProperty('updatedPost')
+        expect(response.body.updatedPost).toHaveProperty('_id')
+        expect(response.body.updatedPost).toHaveProperty('text')
+        expect(response.body.updatedPost).toHaveProperty('sender')
+        expect(response.body.updatedPost).toHaveProperty('createdAt')
+        expect(response.body.updatedPost).toHaveProperty('updatedAt')
+        expect(response.body.updatedPost).toHaveProperty('__v')
+
+    })
+    test('show a post', async ()=>{
+        const user =  new User ({username:'testerAgain',email:'A@A.com',password:'a'})
+        await user.save()
+        const post = new Post({text:'hey'})
+        post.sender = user
+        await post.save()
+        await user.save()
+        const token = await user.generateAuthToken()
+        const response = await request(app)
+        .get(`/main/${post._id}`)
+        .set('Authorization', `Bearer ${token}`)
+        expect(response.body).toHaveProperty('_id')
+        expect(response.body).toHaveProperty('text')
+        expect(response.body).toHaveProperty('sender')
+        expect(response.body).toHaveProperty('createdAt')
+        expect(response.body).toHaveProperty('updatedAt')
+        expect(response.body).toHaveProperty('__v')
+    })
 })
 describe('Testing all private messages endpoints', ()=>{
 
