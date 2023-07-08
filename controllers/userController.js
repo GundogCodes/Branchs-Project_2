@@ -10,10 +10,7 @@ exports.auth = async (req,res,next) =>{
         const token =  req.header("Authorization").replace('Bearer ','')
         const data = jwt.verify(token, process.env.SECRET)
         const user = await User.findOne({ _id: data._id })
-        console.log('req', req)
-        console.log('body', req.body)
-        console.log('user', req.body.user)
-        console.log('ui',user.id)
+
         if(!user){
             res.json({message:`INVALID CREDENTIALS - PLEASE LOGIN`})
         }
@@ -56,7 +53,7 @@ exports.loginUser = async (req,res)=>{
         console.log('user',user)
         console.log('user.pass',user.password)
         console.log('req.body.pass',req.body.password)
-        
+
         if(!user || !await bcrypt.compare(req.body.password, user.password)){
             res.json({message: 'INVALID CREDENTIALS'})
         } else{
@@ -71,14 +68,10 @@ exports.loginUser = async (req,res)=>{
 exports.updateUser = async (req,res)=>{
     try {
         const updatingUser = await User.findOneAndUpdate({'_id':req.params.id}, req.body, {new:true})
-        await updatingUser.save()
-        if(!updatingUser){
-            res.json({message:'Could not find User'})
-        } else{
-            res.json({updatingUser})
-        }
+       
+        res.json({updatingUser})
     } catch (error) {
-        res.json.status(400)({message:error.message})
+        res.status(400).json({message:error.message})
     }
 }
 
@@ -88,9 +81,9 @@ exports.deleteUser = async (req,res)=>{
             res.json('INVALID CREDENTIALS - PLEASE LOGIN')
         } else if(req.user.id === req.params.id){
 
-            console.log('req.user: ',req.user)
-            console.log('req.user.id: ',req.user.id)
-            console.log('req.params.id',req.params.id)
+            // console.log('req.user: ',req.user)
+            // console.log('req.user.id: ',req.user.id)
+            // console.log('req.params.id',req.params.id)
             await User.findOneAndDelete({'_id':req.params.id})
             res.json({message:'User Deleted'})
         }

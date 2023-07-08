@@ -128,18 +128,24 @@ describe('Testing all User endpoints', ()=>{
             expect(response.status).toBe(200)
         })
     })
+
     test('updating user info', async ()=>{
-        const user = await User.findOne({email:'g@g.com'})
-        request.user = user
-        console.log('user', user)
+
+        const user =  new User ({username:'Bao',email:'b@b.com',password:'b'})
+        await user.save()
+        const token = await user.generateAuthToken()
         const response = await request(app)
+
         .put(`/users/${user._id}`)
-        .send({username:'GundoggyDog',email:'g@g.com',password:'g'})
-        console.log('response', response)
+        .set('Authorization', `Bearer ${token}`)
+        .send({username:'GundoggyDog',email:'b@b.com',password:'g'})
+
+        //console.log('response', response)
+
         expect(response.body).toHaveProperty('updatingUser')
         expect(response.body.updatingUser).toHaveProperty('_id')
         expect(response.body.updatingUser).toHaveProperty('username')
-       // expect(response.body.updatingUser.username).toEqual('GundoggyDog')
+       expect(response.body.updatingUser.username).toEqual('GundoggyDog')
         expect(response.body.updatingUser).toHaveProperty('email')
         expect(response.body.updatingUser).toHaveProperty('password')
         expect(response.body.updatingUser).toHaveProperty('posts')
@@ -152,16 +158,21 @@ describe('Testing all User endpoints', ()=>{
         expect(response.body.updatingUser).toHaveProperty('__v')
         expect(response.status).toBe(200)
     })
+    
     test('deleting a user test', async ()=>{
-        const user = await User.findOne({email:'g@g.com'})
-        console.log('user', user)
+        const user =  new User ({username:'gao',email:'ga@b.com',password:'b'})
+        await user.save()
+        const token = await user.generateAuthToken()
         const response = await request(app)
+
         .delete(`/users/${user._id}`)
-        console.log('user',response)
+        .set('Authorization', `Bearer ${token}`)
+        console.log('response',response)
         expect(response.body).toHaveProperty('message')
         expect(response.body.message).toEqual('User Deleted')
         expect(response.status).toBe(200)
     })
+    
     /*
     router.put('/:id', userController.auth, userController.updateUser) //works
     router.delete('/:id', userController.auth, userController.deleteUser) //works
@@ -184,19 +195,3 @@ describe('Testing all private messages endpoints', ()=>{
     router.get('/:id', userController.auth, privateMessageController.seeChats)
     */
 })
-
-/*
-describe('Test all user endpoints', ()=>{
-    
-    test('create a new todo', async ()=>{
-        const response = await request(app)
-        .post('/users/todos')
-        .send({title:'testTitle', description:'testDescription',completed:true})
-
-        expect(response.body.createdTodo.title).toEqual('testTitle')
-        expect(response.body.createdTodo.description).toEqual('testDescription')
-        expect(response.body.createdTodo.completed).toEqual(true)
-        expect(response.statusCode).toBe(200)
-        expect(response.body.createdTodo).toHaveProperty('created_at')
-    })
-*/
