@@ -215,7 +215,7 @@ describe('Testing all main forums endpoints', ()=>{
         const response = await request(app)
         .delete(`/main/${post._id}`)
         .set('Authorization', `Bearer ${token}`)
-        expect(response.body.message).toEqual('post deleted')
+        expect(response.body).toEqual('post deleted')
     })
 
     test('updating a post', async ()=>{

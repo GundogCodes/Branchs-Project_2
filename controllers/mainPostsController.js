@@ -5,16 +5,11 @@ const Post =  require('../models/post')
 const User = require('../models/user')
 
 
+
 exports.allPosts = async (req,res) =>{
     try {
-        postList = []
         const allPosts = await Post.find({})
-        for(let post of allPosts){
-            console.log('post',post)
-           
-            postList.push(` ${post.sender}: ${post.text}`)
-        }
-        res.json(postList)
+        res.json(allPosts)
     } catch (error) {
         res.json({message:error.message})
     }
@@ -43,8 +38,8 @@ exports.makePost = async (req,res)=>{
 
 exports.deletePost = async (req,res) =>{
     try {
-        await Post.findOneAndDelete(req.params.id)
-        res.json({message:'post deleted'})
+        await Post.findOneAndDelete({'_id':req.params.id})
+        res.json('post deleted')
     } catch (error) {
         res.status(400).json({message:error.message})
     }
