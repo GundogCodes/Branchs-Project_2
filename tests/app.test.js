@@ -182,7 +182,7 @@ describe('Testing all main forums endpoints', ()=>{
 
         .get(`/main`)
         .set('Authorization', `Bearer ${token}`)
-        console.log(response)
+       // console.log(response)
         expect(Array.isArray(response.body)).toBe(true)
         
     })
@@ -241,7 +241,7 @@ describe('Testing all main forums endpoints', ()=>{
     })
     test('show a post', async ()=>{
         const user =  new User ({username:'testerAgain',email:'A@A.com',password:'a'})
-        await user.save()
+
         const post = new Post({text:'hey'})
         post.sender = user
         await post.save()
@@ -259,7 +259,48 @@ describe('Testing all main forums endpoints', ()=>{
     })
 })
 describe('Testing all private messages endpoints', ()=>{
+    test('sending a private message', async ()=>{
+        const user1 =  new User ({username:'user1',email:'u1@u.com',password:'u1'})
+        const user2 =  new User ({username:'user2',email:'u2@u.com',password:'u2'})
 
+        await user1.save()
+        await user2.save()
+        const pm = new pMessages({text:'hey'})
+        console.log('PRIAVTE MESSAGE ',pm)
+        pm.sender = user1.username
+        pm.receiver = user2.username
+        await pm.save()
+
+        const token = await user1.generateAuthToken()
+        const response = await request(app)
+        .post(`/pm/${user2._id}`)
+        .set('Authorization', `Bearer ${token}`)
+        .send({text:'hey'})
+        console.log('response body',response.body)
+        expect(response.body).toHaveProperty('_id')
+        expect(response.body).toHaveProperty('text')
+        expect(response.body.text).toEqual('hey')
+        expect(response.body).toHaveProperty('sender')
+        expect(response.body.sender).toEqual(`${user1.username}`)
+        expect(response.body.receiver).toEqual(`${user2.username}`)
+        expect(response.body).toHaveProperty('createdAt')
+        expect(response.body).toHaveProperty('updatedAt')
+        expect(response.body).toHaveProperty('__v')
+    
+        
+
+    })
+    test('see private Messages', async ()=>{
+        const user =  new User ({username:'tester3',email:'t33@t33.com',password:'t'})
+        await user.save()
+        const token = await user.generateAuthToken()
+        const response = await request(app)
+        .get(`/pm/${user._id}`)
+        .set('Authorization', `Bearer ${token}`)
+        expect(response.body).toHaveProperty('user')
+        expect(response.body).toHaveProperty('chats')
+
+    })
     /*
     router.post('/:id', userController.auth, privateMessageController.sendPrivateMessage)
     router.get('/:id', userController.auth, privateMessageController.seeChats)
