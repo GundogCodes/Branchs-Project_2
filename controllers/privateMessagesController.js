@@ -21,12 +21,6 @@ exports.sendPrivateMessage = async (req,res) => {
                
             } else{
 
-                // const messageText = message.text
-                // console.log('messageText',message.text)
-                // console.log('message',message)
-                // console.log('SU before',sendingUser)
-                // console.log('RU before', receivingUser)
-                //sendingUser.chats.addToSet(receivingUser.username)
                 for(let i=0; i<=sendingUser.interactions.length; i++){
                     if (sendingUser.interactions[i] !== sendingUser.username){
                         sendingUser.interactions.addToSet(receivingUser.username)
@@ -76,9 +70,38 @@ exports.seeChats  = async (req,res)=>{
 
         
         } else if(req.params.id !== req.user.id){
-            res.json('Not Authorized to see these chats, please login')
+            res.json({message:'Not Authorized to see these chats, please login',goToProfile:`yourProfile/users/${req.user.id}`})
         }
     } catch (error) {
         res.status(400).json({message:error.message})
     }
 }
+
+exports.deleteMessage = async (req,res)=>{
+    //add functionality that deletes the message from both users chats list as well
+    try {
+        const deletingMessage = await pMessages.findOne({'_id':req.params.id})
+        const user = await User.findOne({'_id':req.user.id})
+        console.log(deletingMessage)
+        if(deletingMessage.sender === user.username){
+            await pMessages.findOneAndDelete({'_id':req.params.id})
+            res.json({message:'message deleted',goToProfile:`yourProfile/users/${user.id}`})
+        } else if(deletingMessage.sender !== user.username){
+            res.json({message:'Not Authorized to see these chats, please login',goToProfile:`yourProfile/users/${user.id}`})
+        }
+    } catch (error) {
+        res.status(400).json({message:error.message})
+    }
+}
+
+/*
+//DELETE
+router.delete('/:id', userController.auth, privateMessageController.deleteMessage)
+
+//UPDATE/EDIT
+router.put('/:id', userController.auth, privateMessageController.editMessage)
+
+//SHOW
+router.get('/:id', userController.auth, privateMessageController.showAMessage)
+
+*/

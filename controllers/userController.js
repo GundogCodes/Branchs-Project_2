@@ -59,7 +59,7 @@ exports.loginUser = async (req,res)=>{
             res.json({message: 'INVALID CREDENTIALS'})
         } else{
             const token = await user.generateAuthToken()
-            res.json({user:user,token:token,goToProfile:`users/users/${user.id}`})
+            res.json({user:user,token:token,goToProfile:`yourProfile/users/${user.id}`, note:'Save that Token!'})
         }
     } catch (error) {
         res.status(400).json({message:error.message})
@@ -68,9 +68,14 @@ exports.loginUser = async (req,res)=>{
 
 exports.updateUser = async (req,res)=>{
     try {
-        const updatingUser = await User.findOneAndUpdate({'_id':req.params.id}, req.body, {new:true})
-       
-        res.json({updatingUser})
+    
+        if(req.user.id !== req.params.id){
+            res.json('INVALID CREDENTIALS - PLEASE LOGIN')
+        
+        } else if(req.user.id === req.params.id){
+            const updatingUser = await User.findOneAndUpdate({'_id':req.params.id}, req.body, {new:true})
+            res.json({updated:updatingUser,goToProfile:`yourProfile/users/${user.id}`})
+        }
     } catch (error) {
         res.status(400).json({message:error.message})
     }
@@ -83,7 +88,7 @@ exports.deleteUser = async (req,res)=>{
         } else if(req.user.id === req.params.id){
 
             await User.findOneAndDelete({'_id':req.params.id})
-            res.json({message:'User Deleted'})
+            res.json({message:'User Deleted',goToProfile:`yourProfile/users/${user.id}`})
         }
     } catch (error) {
         res.json({message:error.message})
