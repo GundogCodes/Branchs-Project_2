@@ -12,7 +12,7 @@ router.post('/:id', userController.auth, privateMessageController.sendPrivateMes
 //DELETE
 router.delete('/:id', userController.auth, privateMessageController.deleteMessage)
 //UPDATE/EDIT
-//router.put('/:id', userController.auth, privateMessageController.editMessage)
+router.put('/:id', userController.auth, privateMessageController.editMessage)
 //SHOW
 //router.get('/:id', userController.auth, privateMessageController.showAMessage)
 

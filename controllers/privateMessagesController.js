@@ -82,7 +82,7 @@ exports.deleteMessage = async (req,res)=>{
     try {
         const deletingMessage = await pMessages.findOne({'_id':req.params.id})
         const user = await User.findOne({'_id':req.user.id})
-        console.log(deletingMessage)
+       // console.log(deletingMessage)
         if(deletingMessage.sender === user.username){
             await pMessages.findOneAndDelete({'_id':req.params.id})
             res.json({message:'message deleted',goToProfile:`yourProfile/users/${user.id}`})
@@ -94,10 +94,23 @@ exports.deleteMessage = async (req,res)=>{
     }
 }
 
-/*
-//DELETE
-router.delete('/:id', userController.auth, privateMessageController.deleteMessage)
+exports.editMessage = async (req,res)=>{
+    try {
+        const updatingMessage = await pMessages.findOne({'_id':req.params.id})
+        const user = await User.findOne({'_id':req.user.id})
+        console.log(updatingMessage)
+        if(updatingMessage.sender === user.username){
+            const editedMessage = await pMessages.findByIdAndUpdate({'_id':req.params.id}, req.body, {new:true})
+            res.json({message:'message updated',editedMessage:editedMessage,goToProfile:`yourProfile/users/${user.id}`})
+        } else if(updatingMessage.sender !== user.username){
+            res.json({message:'Not Authorized to see these chats, please login',goToProfile:`yourProfile/users/${user.id}`})
+        }
+    } catch (error) {
+        res.status(400).json({message:error.message})
+    }
+}
 
+/*
 //UPDATE/EDIT
 router.put('/:id', userController.auth, privateMessageController.editMessage)
 
