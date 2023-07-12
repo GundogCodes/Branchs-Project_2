@@ -50,15 +50,16 @@ exports.loginUser = async (req,res)=>{
     try {
         const user =  await User.findOne({email:req.body.email})
 
-        console.log('user',user)
-        console.log('user.pass',user.password)
-        console.log('req.body.pass',req.body.password)
+        // console.log('user',user)
+        // console.log('user.id',user.id)
+        // console.log('user.pass',user.password)
+        // console.log('req.body.pass',req.body.password)
 
         if(!user || !await bcrypt.compare(req.body.password, user.password)){
             res.json({message: 'INVALID CREDENTIALS'})
         } else{
             const token = await user.generateAuthToken()
-            res.json({user,token})
+            res.json({user:user,token:token,goToProfile:`users/users/${user.id}`})
         }
     } catch (error) {
         res.status(400).json({message:error.message})
@@ -81,9 +82,6 @@ exports.deleteUser = async (req,res)=>{
             res.json('INVALID CREDENTIALS - PLEASE LOGIN')
         } else if(req.user.id === req.params.id){
 
-            // console.log('req.user: ',req.user)
-            // console.log('req.user.id: ',req.user.id)
-            // console.log('req.params.id',req.params.id)
             await User.findOneAndDelete({'_id':req.params.id})
             res.json({message:'User Deleted'})
         }
@@ -101,10 +99,16 @@ exports.getAllUsers = async (req,res)=>{
     }
 }
 
-exports.seeProfile = async (req,res)=>{
+exports.seeAProfile = async (req,res)=>{
     try {
-        const foundUser = await User.findOne({'_id':req.params.id})
-        res.json(foundUser)
+        const user = await User.findOne({'_id':req.params.id})
+        console.log('rpi',req.params.id)
+        console.log('rui',req.user.id)
+        if(req.user.id=== req.params.id){
+            res.json({user:user.username,id:user.id,email:user.email,posts:user.posts,friends:user.friends,chats:user.chats})
+        } else if(req.params.id !== req.user.id){
+            res.json({user:user.username,id:user.id,posts:user.posts})
+        }
 
     } catch (error) {
         res.status(400).json({message: error.message})

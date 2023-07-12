@@ -65,8 +65,8 @@ exports.sendPrivateMessage = async (req,res) => {
 
 exports.seeChats  = async (req,res)=>{
     try {
-        console.log('rui',req.user.id)
-        console.log('rpd',req.params.id)
+        // console.log('rui',req.user.id)
+        // console.log('rpd',req.params.id)
         if(req.params.id === req.user.id){
             
             const foundUser = await User.findOne({'_id':req.user._id}).populate('chats')
