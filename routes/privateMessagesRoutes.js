@@ -14,7 +14,7 @@ router.delete('/:id', userController.auth, privateMessageController.deleteMessag
 //UPDATE/EDIT
 router.put('/:id', userController.auth, privateMessageController.editMessage)
 //SHOW
-//router.get('/:id', userController.auth, privateMessageController.showAMessage)
+//router.get('/:user/:id', userController.auth, privateMessageController.showAMessage)
 
 
 module.exports = router

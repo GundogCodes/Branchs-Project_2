@@ -59,8 +59,7 @@ exports.sendPrivateMessage = async (req,res) => {
 
 exports.seeChats  = async (req,res)=>{
     try {
-        // console.log('rui',req.user.id)
-        // console.log('rpd',req.params.id)
+
         if(req.params.id === req.user.id){
             
             const foundUser = await User.findOne({'_id':req.user._id}).populate('chats')
@@ -71,7 +70,8 @@ exports.seeChats  = async (req,res)=>{
         
         } else if(req.params.id !== req.user.id){
             res.json({message:'Not Authorized to see these chats, please login',goToProfile:`yourProfile/users/${req.user.id}`})
-        }
+        
+        } 
     } catch (error) {
         res.status(400).json({message:error.message})
     }
@@ -110,11 +110,3 @@ exports.editMessage = async (req,res)=>{
     }
 }
 
-/*
-//UPDATE/EDIT
-router.put('/:id', userController.auth, privateMessageController.editMessage)
-
-//SHOW
-router.get('/:id', userController.auth, privateMessageController.showAMessage)
-
-*/
