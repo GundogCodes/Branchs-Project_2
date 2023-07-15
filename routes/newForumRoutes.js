@@ -6,9 +6,10 @@ const userController = require('../controllers/userController')
 //INDUCES
 
 router.get('/', userController.auth, newForumController.showAllForums)
-router.post('/', userController.auth, newForumController.createNewForum)
-router.put('/', userController.auth, newForumController.updateNewForum)
-router.get('/', userController.auth, newForumController.showAforum)
+router.post('/new', userController.auth, newForumController.createNewForum)
+router.put('/:id', userController.auth, newForumController.updateNewForum)
+router.get('/:id', userController.auth, newForumController.showAforum)
+router.delete('/:id', userController.auth, newForumController.deleteAForum)
 
 
 module.exports = router

@@ -1,12 +1,44 @@
-const Forum =  require('../models/forum')
+const Forum =  require('../models/Forum')
 const User = require('../models/user')
 const Post = require('../models/post')
 
+exports.showAllForums = async (req,res) =>{
+    try {
+        
+    } catch (error) {
+        res.status(400).json({message:error.message})
+    }
+}
 
+exports.createNewForum = async (req,res) =>{
+    try {
+        
+    } catch (error) {
+        res.status(400).json({message:error.message})
+    }
+}
 
-/**
-router.get('/', userController.auth, newForumController.showAllForums)
-router.post('/', userController.auth, newForumController.createNewForum)
-router.put('/', userController.auth, newForumController.updateNewForum)
-router.get('/', userController.auth, newForumController.showAforum)
- */
+exports.updateNewForum = async (req,res) =>{
+    try {
+        
+    } catch (error) {
+        res.status(400).json({message:error.message})
+    }
+}
+
+exports.showAforum = async (req,res) =>{
+    try {
+        
+    } catch (error) {
+        res.status(400).json({message:error.message})
+    }
+}
+
+exports.deleteAForum = async (req,res) =>{
+    try {
+        
+    } catch (error) {
+        res.status(400).json({message:error.message})
+    }
+}
+
