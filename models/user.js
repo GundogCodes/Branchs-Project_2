@@ -10,7 +10,8 @@ const userSchema = new mongoose.Schema({
     posts:[{type:mongoose.Schema.Types.ObjectId, ref:'Post'}],
     friends:[{type:mongoose.Schema.Types.ObjectId, ref:'User'}],
     chats:[{type: mongoose.Schema.Types.ObjectId, ref:'privateMessage'}],
-    interactions:{type:Array}
+    interactions:{type:Array},
+    foundedForums:{type:Array}
 
 }, {
     timestamps:true
