@@ -5,7 +5,7 @@ const userController = require('../controllers/userController')
 
 //INDUCES
 //Main forum
-router.get('/', userController.auth, mainPostsController.allPosts)
+router.get('/:id', userController.auth, mainPostsController.allPosts)
 router.post('/new',userController.auth, mainPostsController.makePost)
 router.delete('/:id',userController.auth, mainPostsController.deletePost)
 router.put('/:id', userController.auth, mainPostsController.updatePost)

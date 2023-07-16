@@ -5,7 +5,9 @@ const postSchema = new Schema({
     
     text:{type:String},
 
-    sender:{type:Schema.Types.ObjectId, ref:'User', required:true}
+    sender:{type:Schema.Types.ObjectId, ref:'User', required:true},
+
+    whichForum:{type:Schema.Types.ObjectId, ref:'Forum', required:true}
 
 }, {
     timestamps:true
