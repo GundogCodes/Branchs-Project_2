@@ -1,6 +1,6 @@
 const express = require('express')
 const router = express.Router()
-const mainPostsController =  require('../controllers/mainPostsController')
+const mainPostsController =  require('../controllers/postsController')
 const userController = require('../controllers/userController')
 
 //INDUCES
