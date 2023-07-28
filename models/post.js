@@ -1,4 +1,4 @@
-const {model,Schema} = require('mongoose')
+const {model,Schema, default: mongoose} = require('mongoose')
 const bcrypt = require('bcrypt')
 
 const postSchema = new Schema({
@@ -7,7 +7,7 @@ const postSchema = new Schema({
 
     sender:{type:Schema.Types.ObjectId, ref:'User', required:true},
 
-    whichForum:{type:Schema.Types.ObjectId, ref:'Forum', required:true}
+    comments:[{type:mongoose.Schema.Types.ObjectId, ref:'Comment'}]
 
 }, {
     timestamps:true
