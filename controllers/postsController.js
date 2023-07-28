@@ -6,14 +6,6 @@ const User = require('../models/user')
 
 
 
-exports.allPosts = async (req,res) =>{
-    try {
-        const allPosts = await Post.find({})
-        res.json(allPosts)
-    } catch (error) {
-        res.json({message:error.message})
-    }
-}
 
 exports.makePost = async (req,res)=>{
     try {
@@ -64,5 +56,4 @@ exports.showPost = async (req,res) =>{
 
     }
 }
-
 

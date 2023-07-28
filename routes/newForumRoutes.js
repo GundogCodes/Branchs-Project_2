@@ -1,15 +1,28 @@
 const express = require('express')
 const router = express.Router()
-const newForumController = require('../controllers/forumController')
+const forumController = require('../controllers/forumController')
 const userController = require('../controllers/userController')
 
 //INDUCES
 
-router.get('/', userController.auth, newForumController.showAllForums)
-router.post('/new', userController.auth, newForumController.createNewForum)
-router.put('/:id', userController.auth, newForumController.updateNewForum)
-router.get('/:id', userController.auth, newForumController.showAforum)
-router.delete('/:id', userController.auth, newForumController.deleteAForum)
+//forum routes
+router.get('/', userController.auth, forumController.showAllForums)
+router.post('/new', userController.auth, forumController.createNewForum)
+router.put('/:id', userController.auth, forumController.updateNewForum)
+router.get('/:id', userController.auth, forumController.showAforum)
+router.delete('/:id', userController.auth, forumController.deleteAForum)
 
+//post routes
+router.post('/:id', userController.auth, forumController.makeAPost)
+router.delete('/:id', userController.auth, forumController.deleteAPost)
+router.put('/:id', userController.auth, forumController.updateAPost)
+router.get('/:id', userController.auth, forumController.showAPost)
+
+//comment routes
+
+router.post('/:id', userController.auth, forumController.addComment)
+router.delete('/:id', userController.auth, forumController.deleteComment)
+router.put('/:id', userController.auth, forumController.editComment)
+router.get('/:id', userController.auth, forumController.showAComment)
 
 module.exports = router

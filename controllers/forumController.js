@@ -1,6 +1,7 @@
 const Forum =  require('../models/Forum')
 const User = require('../models/user')
 const Post = require('../models/post')
+const Comment = require('../models/comments')
 
 exports.showAllForums = async (req,res) =>{
     try {
@@ -46,3 +47,31 @@ exports.deleteAForum = async (req,res) =>{
     }
 }
 
+exports.makeAPost = async (req,res)=>{
+    try {
+        const forum = await Forum.findOne({_id:req.params.id})
+        const newPost = await Post.create(req.body)
+        forum.posts.addToSet(newPost)
+        await newPost.save()
+        res.json(forum)
+    } catch (error) {
+        res.status(400).json({error: error.message})
+    }
+}
+
+/*
+
+//post routes
+router.post('/:id', userController.auth, forumController.makeAPost) id of the forum
+router.delete('/:id', userController.auth, forumController.deleteAPost) id of the post
+router.put('/:id', userController.auth, forumController.updateAPost)
+router.get('/:id', userController.auth, forumController.showAPost)
+
+//comment routes
+
+router.post('/:id', userController.auth, forumController.addComment)
+router.delete('/:id', userController.auth, forumController.deleteComment)
+router.put('/:id', userController.auth, forumController.editComment)
+router.get('/:id', userController.auth, forumController.showAComment)
+
+*/
