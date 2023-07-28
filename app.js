@@ -6,7 +6,7 @@ const userRoutes = require('./routes/userRoutes')
 
 const privateMessagesRoutes = require('./routes/privateMessagesRoutes')
 const homeRoutes = require('./routes/homeRoutes')
-const newForumRoutes = require('./routes/newForumRoutes')
+const forumRoutes = require('./routes/forumRoutes')
 
 app.use(express.json())
 app.use(express.urlencoded({extended:true}))
@@ -16,6 +16,6 @@ app.use('/users', userRoutes)
 
 app.use('/pm', privateMessagesRoutes)
 app.use('/home', homeRoutes)
-app.use('/forum',newForumRoutes)
+app.use('/forum',forumRoutes)
 
 module.exports = app

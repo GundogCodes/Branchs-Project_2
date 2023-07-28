@@ -20,9 +20,9 @@ router.get('/:id', userController.auth, forumController.showAPost)
 
 //comment routes
 
-router.post('/:id', userController.auth, forumController.addComment)
-router.delete('/:id', userController.auth, forumController.deleteComment)
-router.put('/:id', userController.auth, forumController.editComment)
-router.get('/:id', userController.auth, forumController.showAComment)
+router.post('/post/:id', userController.auth, forumController.addComment)
+router.delete('/post/:id', userController.auth, forumController.deleteComment)
+router.put('/post/:id', userController.auth, forumController.editComment)
+router.get('/post/:id', userController.auth, forumController.showAComment)
 
 module.exports = router

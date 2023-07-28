@@ -5,8 +5,8 @@ const forumSchema =  new mongoose.Schema({
     title:{type:String, require:true},
     topic:{type:String,require:true},
     description:{type:String,require:true},
-    members:{type:mongoose.Schema.Types.ObjectId, ref:'User'},
-    numOfMembers:{type:Number},
+    members:[{type:mongoose.Schema.Types.ObjectId, ref:'User'}],
+    numOfMembers:{type:Number, default:0},
     posts:[{type:mongoose.Schema.Types.ObjectId, ref:'Post'}]
 })
 

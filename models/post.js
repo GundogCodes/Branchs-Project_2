@@ -1,11 +1,11 @@
-const {model,Schema, default: mongoose} = require('mongoose')
+const mongoose = require('mongoose')
 const bcrypt = require('bcrypt')
 
-const postSchema = new Schema({
+const postSchema = new mongoose.Schema({
     
     text:{type:String},
 
-    sender:{type:Schema.Types.ObjectId, ref:'User', required:true},
+    sender:{type: mongoose.Schema.Types.ObjectId, ref:'User', require:true},
 
     comments:[{type:mongoose.Schema.Types.ObjectId, ref:'Comment'}]
 
@@ -22,6 +22,6 @@ postSchema.pre('save', async function(next){
 
 */
 
-const Post = model('Post', postSchema)
+const Post = mongoose.model('Post', postSchema)
 
 module.exports = Post
